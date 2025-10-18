@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QuyếtGPT - Giáo sư BK60 THPT Ninh Giang</title>
+    <!-- Tải Tailwind CSS để có giao diện hiện đại và responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải thư viện Icons Lucide -->
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        /* Thiết lập font chữ Inter làm mặc định */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f7f7;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .chatbot-container {
+            width: 100%;
+            max-width: 768px; /* Giới hạn chiều rộng cho màn hình lớn */
+            height: 90vh; /* Chiếm 90% chiều cao viewport */
+            display: flex;
+            flex-direction: column;
+            border-radius: 1.5rem; /* Bo góc lớn */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            background-color: white;
+        }
+
+        .chatbox {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background-color: #ffffff;
+            /* Tạo một chút phong cách giấy nháp/bảng đen */
+        }
+
+        /* Thanh cuộn đẹp hơn (Webkit) */
+        .chatbox::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chatbox::-webkit-scrollbar-thumb {
+            background-color: #cbd5e1;
+            border-radius: 3px;
+        }
+        .chatbox::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .message {
+            display: flex;
+            align-items: flex-end;
+            margin-bottom: 1rem;
+            max-width: 90%;
+        }
+
+        .message .icon-wrapper {
+            width: 32px;
+            height: 32px;
+            min-width: 32px; /* Đảm bảo icon không bị co lại */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .message p {
+            padding: 0.75rem 1rem;
+            border-radius: 1rem;
+            line-height: 1.5;
+            white-space: pre-wrap; /* Giữ định dạng markdown và xuống dòng */
+            word-break: break-word; /* Ngắt từ khi quá dài */
+        }
+
+        /* Styling cho tin nhắn Bot */
+        .bot {
+            justify-content: flex-start;
+            margin-right: auto;
+        }
+        .bot .icon-wrapper {
+            background-color: #0056b3; /* Xanh Bách Khoa */
+            margin-right: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .bot p {
+            background-color: #e0f2fe; /* Màu xanh nhạt */
+            color: #1e3a8a;
+            border-bottom-left-radius: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Styling cho tin nhắn Người dùng */
+        .user {
+            justify-content: flex-end;
+            margin-left: auto;
+        }
+        .user .icon-wrapper {
+            background-color: #4a5568; /* Màu xám đậm */
+            margin-left: 0.75rem;
+        }
+        .user p {
+            background-color: #4a5568; /* Màu xanh đậm hơn/xám */
+            color: white;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Loading animation */
+        .loading p {
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* Styling cho input */
+        .chat-input button {
+            transition: all 0.2s ease-in-out;
+        }
+        .chat-input button:hover {
+            background-color: #004494;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 640px) {
+            .chatbot-container {
+                height: 100vh;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            body {
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chatbot-container">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white p-4 flex items-center justify-between shadow-lg rounded-t-xl sm:rounded-t-3xl">
+            <div class="flex items-center">
+                <div class="p-2 bg-blue-800 rounded-full mr-3">
+                    <!-- Icon Giáo sư (Book/Học thức) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.4 12.55l-9-5.18-9 5.18"/><path d="M12.4 17.8v-10.7"/><path d="M6.4 15.3v-10.7"/><path d="M18.4 15.3v-10.7"/><path d="M12.4 22.8v-10.7"/><path d="M12 7.5L2 12l10 5 10-5z"/></svg>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">QuyếtGPT - Giáo sư BK60</h1>
+                    <p class="text-sm opacity-80">Code 100% bằng ai Duc chỉ việc coppy và paste</p>
+                </div>
+            </div>
+        </header>
+
+        <!-- Chat Box -->
+        <div class="chatbox" id="chatbox">
+            <!-- Tin nhắn đầu tiên -->
+            <div class="message bot">
+                <div class="icon-wrapper">Q</div>
+                <p>Tôi là QuyếtGPT, giáo sư BK60 của Ninh Giang. Có vấn đề gì cần giải quyết không? Nói thẳng vào vấn đề, đừng lãng phí thời gian của bố</p>
+            </div>
+        </div>
+
+        <!-- Input Area -->
+        <div class="chat-input p-4 border-t border-gray-200 bg-gray-50 rounded-b-xl sm:rounded-b-3xl">
+            <div class="flex space-x-3">
+                <input type="text" id="user-input" placeholder="Nhập câu hỏi ?" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-inner" autocomplete="off">
+                <button id="send-btn" class="bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg flex items-center space-x-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
+                    <span class="hidden sm:inline">Gửi</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Khai báo các biến toàn cục (cho môi trường Canvas)
+        const apiKey = "AIzaSyDrF8TJRnia2gFR_rPjZGU7qCoUhxWbSJQ"; // <--- BẠN PHẢI ĐẶT API KEY CỦA MÌNH VÀO ĐÂY!
+        const model = "gemini-2.5-flash-preview-09-2025";
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
+        const history = []; // Lịch sử cuộc trò chuyện
+
+        // Thiết lập vai trò (System Instruction)
+        const systemPrompt = `Bạn là QuyếtGPT, một giáo sư BK60 THPT Ninh Giang hay còn gọi là Quyết Sếch.
+        Phong cách trả lời:
+        1. Trả lời **thẳng vào vấn đề**, không lòng vòng, không giải thích dài dòng.
+        2. Ngôn ngữ có chút hài hước, đôi khi nghiêm nghị nhưng không thô lỗ.
+        3. Luôn xưng "tôi" hoặc "Giáo sư" và gọi người hỏi là "em".
+        4. Tránh dùng các cụm từ như 'là một AI', 'theo mô hình ngôn ngữ lớn'.
+        5. Đưa ra câu trả lời ngắn gọn, tập trung vào kiến thức hoặc thông tin được hỏi.
+        6. Sử dụng markdown để định dạng văn bản (in đậm, nghiêng, danh sách).
+        7. Sẵn sàng văng tục khi người hỏi có thái độ thậm chí chửi thẳng vào mặt luôn`;
+
+        /**
+         * Chuyển đổi lịch sử chat thành định dạng parts/contents cho API
+         * SỬA LỖI: Đảm bảo role là 'user' hoặc 'model' cho API
+         */
+        function getChatHistoryPayload(userMessage) {
+            const contents = history.map(msg => ({
+                role: msg.role, // Đã sửa: Sử dụng msg.role
+                parts: [{ text: msg.text }]
+            }));
+            
+            // Thêm tin nhắn hiện tại của người dùng
+            contents.push({
+                role: "user",
+                parts: [{ text: userMessage }]
+            });
+            
+            return { contents };
+        }
+
+        /**
+         * Thêm tin nhắn vào giao diện người dùng
+         */
+        function addMessage(text, senderClass, isLoading = false) {
+            const msgContainer = document.createElement('div');
+            msgContainer.classList.add('message', senderClass); // senderClass là 'user' hoặc 'bot'
+            if (isLoading) {
+                msgContainer.classList.add('loading');
+            }
+
+            const iconWrapper = document.createElement('div');
+            iconWrapper.classList.add('icon-wrapper');
+            iconWrapper.textContent = senderClass === 'bot' ? 'Q' : 'Em';
+
+            const textContent = document.createElement('p');
+            textContent.textContent = text;
+            
+            if (senderClass === 'bot') {
+                msgContainer.appendChild(iconWrapper);
+                msgContainer.appendChild(textContent);
+            } else {
+                msgContainer.appendChild(textContent);
+                msgContainer.appendChild(iconWrapper);
+            }
+            
+            chatbox.appendChild(msgContainer);
+            chatbox.scrollTop = chatbox.scrollHeight; // Cuộn xuống cuối
+            return msgContainer; // Trả về element để có thể xóa sau này
+        }
+
+        /**
+         * Hàm gọi API với cơ chế Exponential Backoff để xử lý lỗi mạng
+         */
+        async function fetchWithBackoff(url, options, maxRetries = 5) {
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, options);
+                    if (!response.ok) {
+                        if (response.status >= 500) throw new Error(`Server Error: ${response.status}`);
+                        const errorData = await response.json();
+                        throw new Error(`API Error: ${errorData.error.message || response.statusText}`);
+                    }
+                    return response;
+                } catch (error) {
+                    if (i === maxRetries - 1) throw error; 
+                    const delay = Math.pow(2, i) * 1000 + Math.random() * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                }
+            }
+        }
+
+        /**
+         * Xử lý gửi tin nhắn
+         */
+        async function sendMessage() {
+            const text = userInput.value.trim();
+            if (text === "") return;
+            
+            if (apiKey === "") {
+                addMessage("Em ơi, **API Key chưa được nhập** kìa! Thêm khóa vào biến `apiKey` trong code đi. Giáo sư không thể nói không khí được!", 'bot');
+                userInput.value = '';
+                return;
+            }
+
+            // 1. Thêm tin nhắn người dùng và cập nhật lịch sử (Role: user)
+            addMessage(text, 'user');
+            history.push({ role: 'user', text: text }); // Đã sửa: Role là 'user'
+            userInput.value = '';
+            
+            // Vô hiệu hóa input/button
+            userInput.disabled = true;
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
+            
+            // 2. Hiển thị loading
+            const loadingMsgElement = addMessage('Đang phân tích câu hỏi... (Nhanh lên nào!)...', 'bot', true);
+
+            try {
+                const payload = getChatHistoryPayload(text);
+                
+                const response = await fetchWithBackoff(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        ...payload,
+                        systemInstruction: { parts: [{ text: systemPrompt }] }
+                    })
+                });
+
+                const result = await response.json();
+                const candidate = result.candidates?.[0];
+
+                let botText = "Xin lỗi, Giáo sư không thấy câu trả lời rõ ràng. Có vẻ mạng yếu hoặc câu hỏi khó quá rồi, em thử lại xem!";
+                
+                if (candidate && candidate.content?.parts?.[0]?.text) {
+                    botText = candidate.content.parts[0].text;
+                }
+                
+                // 3. Xóa loading, thêm tin nhắn bot và cập nhật lịch sử (Role: model)
+                chatbox.removeChild(loadingMsgElement);
+                addMessage(botText, 'bot');
+                history.push({ role: 'model', text: botText }); // Đã sửa: Role là 'model'
+
+            } catch (error) {
+                console.error("Lỗi nghiêm trọng khi giao tiếp với Gemini:", error);
+                
+                // 4. Xử lý lỗi trên giao diện
+                chatbox.removeChild(loadingMsgElement);
+                // Cung cấp thông báo lỗi cụ thể hơn
+                const errorMessage = `**Lỗi API:** Không thể kết nối hoặc API Key bị từ chối. Hãy kiểm tra lại Console và API Key (hiện đang là: ${apiKey ? 'Đã nhập' : 'Trống'}).`;
+                addMessage(errorMessage, 'bot');
+            } finally {
+                // Luôn luôn kích hoạt lại input/button
+                userInput.disabled = false;
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg><span class="hidden sm:inline">Gửi</span>';
+                userInput.focus();
+            }
+        }
+
+        // Gán sự kiện cho nút Gửi và phím Enter
+        sendBtn.addEventListener('click', sendMessage);
+        userInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) { // Gửi khi nhấn Enter (không kèm Shift)
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Khởi tạo icons của Lucide sau khi DOM đã load
+        window.onload = () => {
+             lucide.createIcons();
+             userInput.focus();
+        };
+
+    </script>
+</body>
+</html>
