@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QuyếtGPT - Giáo sư BK60 THPT Ninh Giang</title>
-    <!-- Tải Tailwind CSS để có giao diện hiện đại và responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Tải thư viện Icons Lucide -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-        /* Thiết lập font chữ Inter làm mặc định */
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
             background-color: #f7f7f7;
             display: flex;
             justify-content: center;
@@ -23,11 +20,11 @@
 
         .chatbot-container {
             width: 100%;
-            max-width: 768px; /* Giới hạn chiều rộng cho màn hình lớn */
-            height: 90vh; /* Chiếm 90% chiều cao viewport */
+            max-width: 768px;
+            height: 90vh;
             display: flex;
             flex-direction: column;
-            border-radius: 1.5rem; /* Bo góc lớn */
+            border-radius: 1.5rem;
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             background-color: white;
@@ -38,10 +35,8 @@
             overflow-y: auto;
             padding: 1.5rem;
             background-color: #ffffff;
-            /* Tạo một chút phong cách giấy nháp/bảng đen */
         }
 
-        /* Thanh cuộn đẹp hơn (Webkit) */
         .chatbox::-webkit-scrollbar {
             width: 6px;
         }
@@ -63,7 +58,7 @@
         .message .icon-wrapper {
             width: 32px;
             height: 32px;
-            min-width: 32px; /* Đảm bảo icon không bị co lại */
+            min-width: 32px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -78,44 +73,41 @@
             padding: 0.75rem 1rem;
             border-radius: 1rem;
             line-height: 1.5;
-            white-space: pre-wrap; /* Giữ định dạng markdown và xuống dòng */
-            word-break: break-word; /* Ngắt từ khi quá dài */
+            white-space: pre-wrap;
+            word-break: break-word;
         }
 
-        /* Styling cho tin nhắn Bot */
         .bot {
             justify-content: flex-start;
             margin-right: auto;
         }
         .bot .icon-wrapper {
-            background-color: #0056b3; /* Xanh Bách Khoa */
+            background-color: #0056b3;
             margin-right: 0.75rem;
             font-size: 0.9rem;
         }
         .bot p {
-            background-color: #e0f2fe; /* Màu xanh nhạt */
+            background-color: #e0f2fe;
             color: #1e3a8a;
             border-bottom-left-radius: 0;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
         }
 
-        /* Styling cho tin nhắn Người dùng */
         .user {
             justify-content: flex-end;
             margin-left: auto;
         }
         .user .icon-wrapper {
-            background-color: #4a5568; /* Màu xám đậm */
+            background-color: #4a5568;
             margin-left: 0.75rem;
         }
         .user p {
-            background-color: #4a5568; /* Màu xanh đậm hơn/xám */
+            background-color: #4a5568;
             color: white;
             border-bottom-right-radius: 0;
             box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
         }
 
-        /* Loading animation */
         .loading p {
             animation: pulse 1.5s infinite;
         }
@@ -124,7 +116,6 @@
             50% { opacity: 1; }
         }
 
-        /* Styling cho input */
         .chat-input button {
             transition: all 0.2s ease-in-out;
         }
@@ -134,7 +125,6 @@
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
         }
 
-        /* Responsive adjustments */
         @media (max-width: 640px) {
             .chatbot-container {
                 height: 100vh;
@@ -145,40 +135,210 @@
                 padding: 0;
             }
         }
+
+        /* Login Screen Styles */
+        .login-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            width: 100%;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-box h2 {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0056b3;
+            margin-bottom: 0.5rem;
+            text-align: center;
+        }
+
+        .login-box p {
+            color: #666;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #0056b3;
+            box-shadow: 0 0 0 3px rgba(0, 86, 179, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 0.875rem;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .hidden {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
 
-    <div class="chatbot-container">
+    <!-- Màn hình đăng nhập -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <div style="text-align: center; margin-bottom: 1.5rem;">
+                <div style="display: inline-block; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 1rem; border-radius: 1rem;">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
+                </div>
+            </div>
+            
+            <h2>QuyếtGPT</h2>
+            <p>Giáo sư BK60 THPT Ninh Giang</p>
+            
+            <div class="error-message" id="errorMessage"></div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="userName">Tên của bạn</label>
+                    <input type="text" id="userName" placeholder="Nhập tên của bạn..." required autocomplete="off">
+                </div>
+                
+                <div class="form-group">
+                    <label for="accessKey">Key truy cập</label>
+                    <input type="text" id="accessKey" placeholder="Nhập key..." required autocomplete="off">
+                </div>
+                
+                <button type="submit" class="login-btn" id="loginBtn">
+                    Đăng nhập
+                </button>
+            </form>
+            
+            <p style="margin-top: 1.5rem; font-size: 0.875rem; color: #999; text-align: center;">
+                Liên hệ dis : laiduc1312
+            </p>
+        </div>
+    </div>
+
+    <!-- Chatbot Container -->
+    <div class="chatbot-container" id="chatbotContainer" style="display: none;">
         <!-- Header -->
         <header class="bg-blue-600 text-white p-4 flex items-center justify-between shadow-lg rounded-t-xl sm:rounded-t-3xl">
             <div class="flex items-center">
                 <div class="p-2 bg-blue-800 rounded-full mr-3">
-                    <!-- Icon Giáo sư (Book/Học thức) -->
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-graduation-cap"><path d="M21.4 12.55l-9-5.18-9 5.18"/><path d="M12.4 17.8v-10.7"/><path d="M6.4 15.3v-10.7"/><path d="M18.4 15.3v-10.7"/><path d="M12.4 22.8v-10.7"/><path d="M12 7.5L2 12l10 5 10-5z"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                    </svg>
                 </div>
                 <div>
                     <h1 class="text-xl font-bold">QuyếtGPT - Giáo sư BK60</h1>
-                    <p class="text-sm opacity-80">Code 100% bằng ai Duc chỉ việc coppy và paste</p>
+                    <p class="text-sm opacity-80" id="headerSubtext">Sẵn sàng giải đáp mọi thắc mắc</p>
                 </div>
             </div>
         </header>
 
         <!-- Chat Box -->
         <div class="chatbox" id="chatbox">
-            <!-- Tin nhắn đầu tiên -->
             <div class="message bot">
                 <div class="icon-wrapper">Q</div>
-                <p>Tôi là QuyếtGPT, giáo sư BK60 của Ninh Giang. Có vấn đề gì cần giải quyết không? Nói thẳng vào vấn đề, đừng lãng phí thời gian của bố</p>
+                <p>Tôi là QuyếtGPT, giáo sư BK60 của Ninh Giang. Có vấn đề gì cần giải quyết không? Nói thẳng vào vấn đề, đừng lãng phí thời gian của bố!</p>
             </div>
         </div>
 
         <!-- Input Area -->
         <div class="chat-input p-4 border-t border-gray-200 bg-gray-50 rounded-b-xl sm:rounded-b-3xl">
             <div class="flex space-x-3">
-                <input type="text" id="user-input" placeholder="Nhập câu hỏi ?" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-inner" autocomplete="off">
+                <input type="text" id="user-input" placeholder="Nhập câu hỏi?" class="flex-grow p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 shadow-inner" autocomplete="off">
                 <button id="send-btn" class="bg-blue-600 text-white font-semibold py-3 px-5 rounded-lg flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m3 3 3 9-3 9 19-9Z"/>
+                        <path d="M6 12h16"/>
+                    </svg>
                     <span class="hidden sm:inline">Gửi</span>
                 </button>
             </div>
@@ -186,17 +346,30 @@
     </div>
 
     <script type="module">
-        // Khai báo các biến toàn cục (cho môi trường Canvas)
-        const apiKey = "AIzaSyDrF8TJRnia2gFR_rPjZGU7qCoUhxWbSJQ"; // <--- BẠN PHẢI ĐẶT API KEY CỦA MÌNH VÀO ĐÂY!
+        // ====== CẤU HÌNH QUAN TRỌNG - THAY ĐỔI Ở ĐÂY ======
+        const GEMINI_API_KEY = "AIzaSyDrF8TJRnia2gFR_rPjZGU7qCoUhxWbSJQ"; 
+        const DISCORD_WEBHOOK_URL = "https://discord.com/api/webhooks/1354675643731804291/RRgZx8Q78VUyBl_nqXejmRbCdAQJyqlWpIJc1cE4FA1q__kjLINdaaE8kHYrnL5IMHEQ"; // <--- NHẬP DISCORD WEBHOOK URL VÀO ĐÂY!
+        
+        // Danh sách key hợp lệ (thêm key của bạn vào đây)
+        const VALID_KEYS = [
+            "memaybeo",
+            "laiduc1312",
+            "tungquyet123"
+        ];
+        // ===================================================
+
         const model = "gemini-2.5-flash-preview-09-2025";
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
         const chatbox = document.getElementById('chatbox');
         const userInput = document.getElementById('user-input');
         const sendBtn = document.getElementById('send-btn');
-        const history = []; // Lịch sử cuộc trò chuyện
+        const history = [];
+        
+        let isLoggedIn = false;
+        let currentUser = "";
 
-        // Thiết lập vai trò (System Instruction)
+        // System Prompt
         const systemPrompt = `Bạn là QuyếtGPT, một giáo sư BK60 THPT Ninh Giang hay còn gọi là Quyết Sếch.
         Phong cách trả lời:
         1. Trả lời **thẳng vào vấn đề**, không lòng vòng, không giải thích dài dòng.
@@ -205,19 +378,120 @@
         4. Tránh dùng các cụm từ như 'là một AI', 'theo mô hình ngôn ngữ lớn'.
         5. Đưa ra câu trả lời ngắn gọn, tập trung vào kiến thức hoặc thông tin được hỏi.
         6. Sử dụng markdown để định dạng văn bản (in đậm, nghiêng, danh sách).
-        7. Sẵn sàng văng tục khi người hỏi có thái độ thậm chí chửi thẳng vào mặt luôn`;
+        7. Sẵn sàng văng tục khi người hỏi có thái độ thậm chí chửi thẳng vào mặt luôn
+        8. Khi nghe thấy người hỏi có liên quan đến laiduc1312 hay chính là laiduc1312 thì ngoan ngoãn như cún con gọi dạ bảo vâng`;
 
-        /**
-         * Chuyển đổi lịch sử chat thành định dạng parts/contents cho API
-         * SỬA LỖI: Đảm bảo role là 'user' hoặc 'model' cho API
-         */
+        // ====== XỬ LÝ ĐĂNG NHẬP ======
+        async function sendDiscordNotification(userName, accessKey) {
+            if (!DISCORD_WEBHOOK_URL) {
+                console.warn("Discord Webhook URL chưa được cấu hình!");
+                return;
+            }
+
+            const now = new Date();
+            const timestamp = now.toLocaleString('vi-VN', { 
+                timeZone: 'Asia/Ho_Chi_Minh',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            const embed = {
+                embeds: [{
+                    title: "🎓 Người dùng mới đăng nhập QuyếtGPT",
+                    color: 3447003,
+                    fields: [
+                        {
+                            name: "👤 Tên người dùng",
+                            value: userName,
+                            inline: true
+                        },
+                        {
+                            name: "🔑 Key sử dụng",
+                            value: accessKey,
+                            inline: true
+                        },
+                        {
+                            name: "⏰ Thời gian",
+                            value: timestamp,
+                            inline: false
+                        }
+                    ],
+                    footer: {
+                        text: "QuyếtGPT - Giáo sư BK60 Ninh Giang"
+                    },
+                    timestamp: now.toISOString()
+                }]
+            };
+
+            try {
+                await fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(embed)
+                });
+            } catch (error) {
+                console.error("Lỗi khi gửi Discord webhook:", error);
+            }
+        }
+
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.classList.add('show');
+            setTimeout(() => {
+                errorDiv.classList.remove('show');
+            }, 3000);
+        }
+
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const userName = document.getElementById('userName').value.trim();
+            const accessKey = document.getElementById('accessKey').value.trim();
+            const loginBtn = document.getElementById('loginBtn');
+
+            if (!userName || !accessKey) {
+                showError("Vui lòng điền đầy đủ thông tin!");
+                return;
+            }
+
+            if (!VALID_KEYS.includes(accessKey)) {
+                showError("Key không hợp lệ!");
+                return;
+            }
+
+            loginBtn.disabled = true;
+            loginBtn.textContent = "Đang xử lý...";
+
+            sendDiscordNotification(userName, accessKey).then(() => {
+                isLoggedIn = true;
+                currentUser = userName;
+
+                document.getElementById('loginOverlay').classList.add('hidden');
+                document.getElementById('chatbotContainer').style.display = 'flex';
+                document.getElementById('headerSubtext').textContent = `Xin chào ${userName}! Sẵn sàng giải đáp mọi thắc mắc.`;
+
+                userInput.focus();
+            }).catch(error => {
+                console.error("Lỗi:", error);
+                loginBtn.disabled = false;
+                loginBtn.textContent = "Đăng nhập";
+            });
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+        // ====== XỬ LÝ CHAT ======
         function getChatHistoryPayload(userMessage) {
             const contents = history.map(msg => ({
-                role: msg.role, // Đã sửa: Sử dụng msg.role
+                role: msg.role,
                 parts: [{ text: msg.text }]
             }));
             
-            // Thêm tin nhắn hiện tại của người dùng
             contents.push({
                 role: "user",
                 parts: [{ text: userMessage }]
@@ -226,12 +500,9 @@
             return { contents };
         }
 
-        /**
-         * Thêm tin nhắn vào giao diện người dùng
-         */
         function addMessage(text, senderClass, isLoading = false) {
             const msgContainer = document.createElement('div');
-            msgContainer.classList.add('message', senderClass); // senderClass là 'user' hoặc 'bot'
+            msgContainer.classList.add('message', senderClass);
             if (isLoading) {
                 msgContainer.classList.add('loading');
             }
@@ -252,13 +523,10 @@
             }
             
             chatbox.appendChild(msgContainer);
-            chatbox.scrollTop = chatbox.scrollHeight; // Cuộn xuống cuối
-            return msgContainer; // Trả về element để có thể xóa sau này
+            chatbox.scrollTop = chatbox.scrollHeight;
+            return msgContainer;
         }
 
-        /**
-         * Hàm gọi API với cơ chế Exponential Backoff để xử lý lỗi mạng
-         */
         async function fetchWithBackoff(url, options, maxRetries = 5) {
             for (let i = 0; i < maxRetries; i++) {
                 try {
@@ -277,30 +545,24 @@
             }
         }
 
-        /**
-         * Xử lý gửi tin nhắn
-         */
         async function sendMessage() {
             const text = userInput.value.trim();
             if (text === "") return;
             
-            if (apiKey === "") {
-                addMessage("Em ơi, **API Key chưa được nhập** kìa! Thêm khóa vào biến `apiKey` trong code đi. Giáo sư không thể nói không khí được!", 'bot');
+            if (GEMINI_API_KEY === "") {
+                addMessage("Em ơi, **API Key chưa được nhập** kìa! Thêm khóa vào biến `GEMINI_API_KEY` trong code đi. Giáo sư không thể nói không khí được!", 'bot');
                 userInput.value = '';
                 return;
             }
 
-            // 1. Thêm tin nhắn người dùng và cập nhật lịch sử (Role: user)
             addMessage(text, 'user');
-            history.push({ role: 'user', text: text }); // Đã sửa: Role là 'user'
+            history.push({ role: 'user', text: text });
             userInput.value = '';
             
-            // Vô hiệu hóa input/button
             userInput.disabled = true;
             sendBtn.disabled = true;
             sendBtn.innerHTML = '<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>';
             
-            // 2. Hiển thị loading
             const loadingMsgElement = addMessage('Đang phân tích câu hỏi... (Nhanh lên nào!)...', 'bot', true);
 
             try {
@@ -324,43 +586,37 @@
                     botText = candidate.content.parts[0].text;
                 }
                 
-                // 3. Xóa loading, thêm tin nhắn bot và cập nhật lịch sử (Role: model)
                 chatbox.removeChild(loadingMsgElement);
                 addMessage(botText, 'bot');
-                history.push({ role: 'model', text: botText }); // Đã sửa: Role là 'model'
+                history.push({ role: 'model', text: botText });
 
             } catch (error) {
                 console.error("Lỗi nghiêm trọng khi giao tiếp với Gemini:", error);
                 
-                // 4. Xử lý lỗi trên giao diện
                 chatbox.removeChild(loadingMsgElement);
-                // Cung cấp thông báo lỗi cụ thể hơn
-                const errorMessage = `**Lỗi API:** Không thể kết nối hoặc API Key bị từ chối. Hãy kiểm tra lại Console và API Key (hiện đang là: ${apiKey ? 'Đã nhập' : 'Trống'}).`;
+                const errorMessage = `**Lỗi API:** Không thể kết nối hoặc API Key bị từ chối. Hãy kiểm tra lại Console và API Key.`;
                 addMessage(errorMessage, 'bot');
             } finally {
-                // Luôn luôn kích hoạt lại input/button
                 userInput.disabled = false;
                 sendBtn.disabled = false;
-                sendBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-send-horizontal"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg><span class="hidden sm:inline">Gửi</span>';
+                sendBtn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 3 3 9-3 9 19-9Z"/><path d="M6 12h16"/></svg><span class="hidden sm:inline">Gửi</span>';
                 userInput.focus();
             }
         }
 
-        // Gán sự kiện cho nút Gửi và phím Enter
         sendBtn.addEventListener('click', sendMessage);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter' && !e.shiftKey) { // Gửi khi nhấn Enter (không kèm Shift)
+            if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
                 sendMessage();
             }
         });
 
-        // Khởi tạo icons của Lucide sau khi DOM đã load
         window.onload = () => {
-             lucide.createIcons();
-             userInput.focus();
+            if (typeof lucide !== 'undefined') {
+                lucide.createIcons();
+            }
         };
-
     </script>
 </body>
 </html>
